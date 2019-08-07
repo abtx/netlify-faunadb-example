@@ -12,15 +12,15 @@ exports.handler = (event, context, callback) => {
   return client.query(q.Delete(q.Ref(`classes/todos/${id}`)))
     .then((response) => {
       console.log('success', response)
-      return callback(null, {
+      return {
         statusCode: 200,
         body: JSON.stringify(response)
-      })
+      }
     }).catch((error) => {
       console.log('error', error)
-      return callback(null, {
+      return {
         statusCode: 400,
         body: JSON.stringify(error)
-      })
+      }
     })
 }

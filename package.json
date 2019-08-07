@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dotenv": "^8.0.0",
     "faunadb": "^2.5.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
@@ -12,7 +13,7 @@
     "bootstrap": "node ./scripts/bootstrap-fauna-database.js",
     "docs": "md-magic --path '**/*.md' --ignore 'node_modules'",
     "checkForFaunaKey": "node ./scripts/check-for-fauna-key.js",
-    "start": "npm-run-all --parallel checkForFaunaKey start:app start:server",
+    "start": "export $(cat .env | xargs) && npm-run-all --parallel checkForFaunaKey start:app start:server ",
     "start:app": "react-scripts start",
     "start:server": "netlify-lambda serve functions -c ./webpack.config.js",
     "prebuild": "echo 'setup faunaDB' && npm run bootstrap",
