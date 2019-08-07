@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import Protected from './../../Protected';
 import Public from './../../Public';
