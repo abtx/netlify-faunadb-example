@@ -13,6 +13,9 @@ import {
   } from 'react-router-dom'
   
 
+  const user = netlifyIdentity.currentUser();
+  console.log({user})
+  
 const netlifyAuth = {
     isAuthenticated: false,
     user: null,
@@ -39,7 +42,7 @@ const netlifyAuth = {
       <Route
         {...rest}
         render={props =>
-          netlifyAuth.isAuthenticated ? (
+            netlifyIdentity.currentUser() ? (
             <Component {...props} />
           ) : (
             <Redirect
@@ -56,7 +59,7 @@ const netlifyAuth = {
 
 const AuthButton = withRouter(
     ({ history }) =>
-      netlifyAuth.isAuthenticated ? (
+        netlifyIdentity.currentUser() ? (
         <p>
           Welcome!{' '}
           <button
@@ -67,7 +70,8 @@ const AuthButton = withRouter(
             Sign out
           </button>
         </p>
-      ) : (
+      ) : ( 
+          
         <p>You are not logged in.</p>
       )
   );
@@ -75,7 +79,10 @@ const AuthButton = withRouter(
 
   class Login extends React.Component {
     state = { redirectToReferrer: false };
-  
+
+    componentDidMount() {
+       
+    }
     login = () => {
       netlifyAuth.authenticate(() => {
         this.setState({ redirectToReferrer: true });

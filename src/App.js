@@ -10,6 +10,8 @@ import './App.css'
 
 import AuthExample from './components/AuthExample'
 
+import netlifyIdentity from 'netlify-identity-widget';
+
 export default class App extends Component {
   state = {
     todos: [],
@@ -274,6 +276,19 @@ export default class App extends Component {
       )
     })
   }
+  loggedIn() {
+    const user = netlifyIdentity.currentUser();
+    console.log({ user });
+    if(!user) {
+      return
+    }
+    return (
+      <div>
+        <h3>Are we logged in?</h3>
+        You are logged in as <b>{user.email}</b>
+      </div>
+    );
+  }
   render() {
     return (
       <div className='app'>
@@ -305,6 +320,8 @@ export default class App extends Component {
           </form>
 
           {this.renderTodos()}
+          {this.loggedIn()}
+
         </div>
         <SettingsMenu
           showMenu={this.state.showMenu}
