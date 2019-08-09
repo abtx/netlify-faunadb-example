@@ -48,10 +48,12 @@ export default class App extends Component {
 
     // reset input to empty
     this.inputElement.value = ''
-
+    const user = netlifyIdentity.currentUser();
+    console.log({ user });
     const todoInfo = {
       title: todoValue,
       completed: false,
+      owner: user.id,
     }
     // Optimistically add todo to UI
     const newTodoArray = [{
@@ -286,6 +288,11 @@ export default class App extends Component {
       <div>
         <h3>Are we logged in?</h3>
         You are logged in as <b>{user.email}</b>
+        {user.app_metadata.roles && <div><b>{user.app_metadata.roles[0]} </b></div>}
+
+        {user.app_metadata.roles && <div><b> this is only if my user has a role </b></div>}
+        
+        <div>{user.id}</div> 
       </div>
     );
   }
