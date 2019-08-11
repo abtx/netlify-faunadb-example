@@ -9,17 +9,26 @@ import isLocalHost from './utils/isLocalHost'
 import './App.css'
 
 import AuthExample from './components/AuthExample'
+import TestForm from './components/TestForm'
 
 import netlifyIdentity from 'netlify-identity-widget';
 
+
 export default class App extends Component {
-  state = {
-    todos: [],
-    showMenu: false
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      todos: [],
+      showMenu: false,
+      value: ''
+    }
   }
+
   componentDidMount() {
     // Fetch all todos
-    api.readAll(netlifyIdentity.currentUser().id).then((todos) => {
+    const currentUserId = netlifyIdentity.currentUser() && netlifyIdentity.currentUser().id
+    api.readAll(currentUserId).then((todos) => {
       if (todos.message === 'unauthorized') {
         if (isLocalHost()) {
           alert('FaunaDB key is not unauthorized. Make sure you set it in terminal session where you ran `npm start`. Visit http://bit.ly/set-fauna-key for more info')
@@ -35,6 +44,7 @@ export default class App extends Component {
       })
     })
   }
+  
   saveTodo = (e) => {
     e.preventDefault()
     const { todos } = this.state
@@ -280,7 +290,7 @@ export default class App extends Component {
   }
   loggedIn() {
     const user = netlifyIdentity.currentUser();
-    console.log({ user });
+    // console.log({ user });
     if(!user) {
       return
     }
@@ -304,6 +314,8 @@ export default class App extends Component {
 
         <AuthExample />
 
+        <TestForm />
+        
         <div className='todo-list'>
           <h2>
             Create todo
