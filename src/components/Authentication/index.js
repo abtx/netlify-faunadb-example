@@ -79,15 +79,18 @@ const AuthButton = withRouter(
 
   class Login extends React.Component {
     state = { redirectToReferrer: false };
+    abortController = new this.abortController()
 
-    componentDidMount() {
-       
-    }
     login = () => {
       netlifyAuth.authenticate(() => {
+        this.abortController.signal
         this.setState({ redirectToReferrer: true });
       });
     };
+
+    componentWillUnmount() {
+      this.abortController.abort()
+    }
   
     render() {
       let { from } = this.props.location.state || { from: { pathname: '/' } };
