@@ -1,17 +1,23 @@
 import React from 'react'
 
+import Something from './SectionName'
+import SomethingElse from './SectionTwo'
+
+
 const encode = (data) => {
   return Object.keys(data)
       .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
       .join("&");
 }
 
+let maxPages = 2
+
 export default class TestForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       form:{ name: "", email: "", message: "", local:"" },
-      page: 0
+      page: 1
     }
   }
 
@@ -39,17 +45,22 @@ export default class TestForm extends React.Component {
 
   nextSection = e => {
     e.preventDefault()
-
-    console.log('nextSection')
-    
+    if(this.state.page >= maxPages) return
     let newState = {
       ...this.state
     }
     newState.page = this.state.page + 1
-    
-    this.setState(newState)
-    console.log(this.state)
-    return
+    return this.setState(newState)
+  }
+
+  previousSection = e => {
+    e.preventDefault()
+    if(this.state.page <= 1) return
+    let newState = {
+      ...this.state
+    }
+    newState.page = this.state.page - 1
+    return this.setState(newState)
   }
 
   render() {
@@ -59,37 +70,20 @@ export default class TestForm extends React.Component {
       <div>
          Page: {this.state.page}
 
-    <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit}>
+            
             <div>
-              <p>
-                <label>
-                  Local: <input type="text" name="local" value={local} onChange={this.handleChange} />
-                </label>
-              </p>
-              <p>
-                <label>
-                  Your Name: <input type="text" name="name" value={name} onChange={this.handleChange} />
-                </label>
-              </p>
-
-              <button onClick={this.nextSection}>save and next</button>
-
+            {this.state.page === 1 && <Something callback={this.handleChange} local={local} name={name}/> }               
             </div>
+
             <div>
-              <p>
-                <label>
-                  Your Email: <input type="email" name="email" value={email} onChange={this.handleChange} />
-                </label>
-              </p>
-              <p>
-                <label>
-                  Message: <textarea name="message" value={message} onChange={this.handleChange} />
-                </label>
-              </p>
+            {this.state.page === 2 && <SomethingElse callback={this.handleChange} email={email} message={message}/> } 
             </div>
-          
+
+            <button onClick={this.nextSection}>save and next</button>
+            <button onClick={this.previousSection}>previous</button>
+
         </form>
-
 
         <button onClick={this.handleSubmit}>Submit outside</button>
       </div>
