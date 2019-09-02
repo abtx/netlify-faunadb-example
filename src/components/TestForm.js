@@ -9,13 +9,15 @@ const encode = (data) => {
 export default class TestForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {form:{ name: "", email: "", message: "", local:"" }}
+    this.state = {
+      form:{ name: "", email: "", message: "", local:"" },
+      page: 0
+    }
   }
 
   /* Here’s the juicy bit for posting the form submission */
 
   handleSubmit = e => {
-    // console.log('try submit')
     fetch("https://zen-hamilton-2fec8a.netlify.com/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -27,11 +29,27 @@ export default class TestForm extends React.Component {
     e.preventDefault();
   };
 
-  handleChange = e => this.setState({ form: {[e.target.name]: e.target.value }});
+  handleChange = e => {
+    let newState = {
+      ...this.state
+    }
+    newState.form[e.target.name]= e.target.value
+    return this.setState(newState)
+  }
 
-  nextPage = e => {
-    this.page += 1
-    console.log(this.page)
+  nextSection = e => {
+    e.preventDefault()
+
+    console.log('nextSection')
+    
+    let newState = {
+      ...this.state
+    }
+    newState.page = this.state.page + 1
+    
+    this.setState(newState)
+    console.log(this.state)
+    return
   }
 
   render() {
@@ -39,7 +57,7 @@ export default class TestForm extends React.Component {
     
     return (
       <div>
-        
+         Page: {this.state.page}
 
     <form onSubmit={this.handleSubmit}>
             <div>
@@ -54,7 +72,8 @@ export default class TestForm extends React.Component {
                 </label>
               </p>
 
-              <button onClick={this.nextPage}>save and next</button>
+              <button onClick={this.nextSection}>save and next</button>
+
             </div>
             <div>
               <p>
