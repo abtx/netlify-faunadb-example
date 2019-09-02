@@ -12,6 +12,13 @@ const encode = (data) => {
 
 let maxPages = 2
 
+if(localStorage) {
+
+  console.log("ls data is ")
+  let res = localStorage.getItem('myData')
+  console.log(JSON.parse(res))
+}
+
 export default class TestForm extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +47,8 @@ export default class TestForm extends React.Component {
       ...this.state
     }
     newState.form[e.target.name]= e.target.value
+    localStorage.setItem('myData', JSON.stringify(newState));
+    console.log(newState)
     return this.setState(newState)
   }
 
